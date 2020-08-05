@@ -11,9 +11,12 @@ namespace Gimnasium
     {
         public static IPAddress[] iPAddress = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
 
-        public static async Task Listen()
+        public static async Task Listen(string adress = "")
         {
-            string adress = "http://192.168.2.44:8888/";
+            if (iPAddress.Length > 0)
+            {
+                adress = adress.Length < 1 ? "http://" + iPAddress[0].ToString() + ":8888/":"localhost:8888/";
+            }
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add(adress);
             listener.Start();
