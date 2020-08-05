@@ -19,7 +19,22 @@ namespace Gimnasium
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
             labelTime.Text = DateTime.Now.ToString("HH:mm:ss");
+            foreach (Bell bell in Bell.bellList)
+            {
+                if (bell.time + ":00" == DateTime.Now.ToString("HH:mm:ss"))
+                {
+                    Thread myThread = new Thread(new ThreadStart(aup));
+                    myThread.Start();      
+                    
+                    void aup()
+                    {
+                        audio.AudioPlay("zvon.mp3");
+                    }
+
+                }
+            }
         }
 
         private void buttonBell_Click(object sender, EventArgs e)
@@ -41,6 +56,7 @@ namespace Gimnasium
             Bell.bellList.Add(new Bell("10:35"));
             Bell.bellList.Add(new Bell("10:45"));
             Bell.bellList.Add(new Bell("11:30"));
+            Bell.bellList.Add(new Bell("16:35"));
         }
     }
 }
