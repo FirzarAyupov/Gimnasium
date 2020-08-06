@@ -11,6 +11,52 @@ namespace Gimnasium
     {
         public static IPAddress[] iPAddress = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
 
+        private static string style = "<style>
+        *{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .button-response{
+            border-radius: 5px;
+            background-color: red;
+            color: white;
+            padding: 10px;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+        }
+table{
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        table td, table th{
+            padding: 5px;
+            border-bottom: 1px solid #777;
+        }
+        form{
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+        }
+        form input[type = submit], form input[type = time]{
+            flex-grow: 1;
+            font-size: 24px;
+        }
+        form input[type = time]{
+            margin-right: 5px;
+        }
+        form input[type = submit]{
+            margin-left: 5px;
+            padding: 5px;
+            font-size: 19px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+    </style>"
+
         public static async Task Listen(string adress = "")
         {
             if (iPAddress.Length > 0)

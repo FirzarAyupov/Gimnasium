@@ -34,6 +34,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.comboBoxIpAdress = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tableBell = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.tableBell)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonBell
@@ -84,19 +86,30 @@
             this.label1.Text = "label1";
             this.label1.Visible = false;
             // 
+            // tableBell
+            // 
+            this.tableBell.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableBell.Location = new System.Drawing.Point(12, 96);
+            this.tableBell.Name = "tableBell";
+            this.tableBell.Size = new System.Drawing.Size(225, 141);
+            this.tableBell.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(249, 411);
+            this.Controls.Add(this.tableBell);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxIpAdress);
             this.Controls.Add(this.labelTime);
             this.Controls.Add(this.buttonBell);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Управление звонком";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.tableBell)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,6 +122,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ComboBox comboBoxIpAdress;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView tableBell;
     }
 }
 
