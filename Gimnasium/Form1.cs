@@ -11,15 +11,16 @@ namespace Gimnasium
 {
     public partial class Form1 : Form
     {
+        string[] args;
         Audio audio;
-        public Form1()
+        public Form1(string[] a)
         {
+            args = a;
             InitializeComponent();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
             labelTime.Text = DateTime.Now.ToString("HH:mm:ss");
             foreach (Bell bell in Bell.bellList)
             {
@@ -47,6 +48,11 @@ namespace Gimnasium
             timer1.Enabled = true;
             comboBoxIpAdress.Items.AddRange(Network.iPAddress);
             audio = Audio.getInstance();
+            string adress = "http://" + Network.iPAddress + ":8888";
+            if (args.Length > 0)
+            {
+                adress = "http://" + args[0] + ":8888";
+            }
             _ = Network.Listen();
             Bell.bellList.Add(new Bell("8:00"));
             Bell.bellList.Add(new Bell("8:45"));

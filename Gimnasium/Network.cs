@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Gimnasium
@@ -11,52 +12,69 @@ namespace Gimnasium
     {
         public static IPAddress[] iPAddress = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
 
-        private static string style = "<style>
-        *{
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .button-response{
-            border-radius: 5px;
-            background-color: red;
-            color: white;
-            padding: 10px;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-        }
-table{
-            margin-top: 10px;
-            width: 100%;
-        }
+        private static string htmlHead = @"
+            <!DOCTYPE html>
+            <html lang='ru'>
+            <style>
+                    *{
+                        font-family: Arial, Helvetica, sans-serif;
+                    }
+                    .button-response{
+                        border-radius: 5px;
+                        background-color: red;
+                        color: white;
+                        padding: 10px;
+                        display: block;
+                        text-align: center;
+                        text-decoration: none;
+                    }
+                    table{
+                        margin-top: 10px;
+                        width: 100%;
+                    }
         
-        table td, table th{
-            padding: 5px;
-            border-bottom: 1px solid #777;
-        }
-        form{
-            margin-top: 10px;
-            width: 100%;
-            display: flex;
-        }
-        form input[type = submit], form input[type = time]{
-            flex-grow: 1;
-            font-size: 24px;
-        }
-        form input[type = time]{
-            margin-right: 5px;
-        }
-        form input[type = submit]{
-            margin-left: 5px;
-            padding: 5px;
-            font-size: 19px;
-            background-color: green;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
+                    table td, table th{
+                        padding: 5px;
+                        border-bottom: 1px solid #777;
+                    }
+                    form{
+                        margin-top: 10px;
+                        width: 100%;
+                        display: flex;
+                    }
+                    form input{
+                        flex-grow: 1;
+                        font-size: 18px;
+                    }
+                    form input[type = time],form input[type = text]{
+                        margin-right: 5px;
+                    }
+                    form input[type = submit]{
+                        padding: 5px;
+                        font-size: 14px;
+                        background-color: green;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                    }
+            </style>
+            <head>
+                <meta charset='utf-8'>
+                <meta name = 'viewport' content='width=device-width, initial-scale=1.0'>
+                <title>Система управления звонком</title>
+            </head>
+            <body>";        
 
-    </style>"
+        static string DecodertoUTF8(string text)
+        {
+            Encoding utf8 = Encoding.GetEncoding("UTF-8");
+            Encoding win1251 = Encoding.GetEncoding("Windows-1251");
 
+            byte[] utf8Bytes = win1251.GetBytes(text);
+            byte[] win1251Bytes = Encoding.Convert(utf8, win1251, utf8Bytes);
+
+            return win1251.GetString(win1251Bytes);
+        }
         public static async Task Listen(string adress = "")
         {
             if (iPAddress.Length > 0)
@@ -84,6 +102,12 @@ table{
                                 Audio audio = Audio.getInstance();
                                 audio.AudioPlay("zvon.mp3");
                                 break;
+                            case "addbell":
+                                if (request.QueryString.AllKeys.Contains("time"))
+                                {
+                                    Bell.bellList.Add(new Bell(request.QueryString["time"], DecodertoUTF8(request.QueryString["comment"])));
+                                }
+                                break;
                             case "stop":
                                 return;
                         }
@@ -92,15 +116,31 @@ table{
                 }
                 HttpListenerResponse response = context.Response;
 
-                string responseString = "<html><head><meta charset='utf8'></head><body><a href='" + adress + "?command=start'>Звонок</a></body></html>";
-                string bellTable = "";
+                
+
+                string htmlButton = "<a class='button-response' href='" + adress + "?command=start'>ЗВОНОК</a>";
+
+                string htmlBellTable = "<table cellspacing='0' cellpadding='0'>";
                 foreach(Bell bell in Bell.bellList)
                 {
-                    bellTable += "<br>" + bell.num + " "
-                        + bell.time + " "
-                        + bell.comment;
+                    htmlBellTable += "<tr>";
+                    htmlBellTable += "<td>" + bell.num + "</td><td>"
+                        + bell.time + "</td><td>"
+                        + bell.comment + "</td>";
+                    htmlBellTable += "</tr>";
                 }
-                responseString += bellTable;
+                htmlBellTable += "</table>";
+
+                string htmlAddBellForm = "<form action='" + adress + "addbell' method='GET'>" +
+                                            "<input type = 'hidden' name = 'command' value = 'addbell'>" +
+                                            "<input type = 'time' name = 'time'>" +
+                                            "<input type = 'text' name = 'comment' value='Комментарий'" +
+                                            "<input type = 'hidden' name = 'pass' value = 'DkmfRTY610'>" +
+                                            "<input type = 'submit' value = 'Добавить'>" +
+                                         "</form>";
+
+                
+                string responseString = htmlHead + htmlButton + htmlBellTable + htmlAddBellForm + "</body></html>";
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                 response.ContentLength64 = buffer.Length;
                 Stream output = response.OutputStream;
