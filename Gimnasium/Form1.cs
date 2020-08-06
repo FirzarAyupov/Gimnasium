@@ -31,7 +31,7 @@ namespace Gimnasium
                     
                     void aup()
                     {
-                        audio.AudioPlay("zvon.mp3");
+                        audio.AudioPlayAsync("zvon.mp3");
                     }
 
                 }
@@ -40,7 +40,7 @@ namespace Gimnasium
 
         private void buttonBell_Click(object sender, EventArgs e)
         {
-            audio.AudioPlay("zvon.mp3");
+            audio.AudioPlayAsync("zvon.mp3");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -54,15 +54,15 @@ namespace Gimnasium
                 adress = "http://" + args[0] + ":8888";
             }
             _ = Network.Listen();
-            Bell.bellList.Add(new Bell("8:00"));
+            Bell.bellList.Add(new Bell("8:00", "Первый урок"));
             Bell.bellList.Add(new Bell("8:45"));
-            Bell.bellList.Add(new Bell("9:55"));
+            Bell.bellList.Add(new Bell("9:55", "Второй урок"));
             Bell.bellList.Add(new Bell("9:40"));
-            Bell.bellList.Add(new Bell("9:50"));
+            Bell.bellList.Add(new Bell("9:50", "Третий урок"));
             Bell.bellList.Add(new Bell("10:35"));
-            Bell.bellList.Add(new Bell("10:45"));
+            Bell.bellList.Add(new Bell("10:45", "Четвертый урок"));
             Bell.bellList.Add(new Bell("11:30"));
-            Bell.bellList.Add(new Bell("16:35"));
+            Bell.bellList.Add(new Bell("16:35", "Проверка"));
         }
     }
 }

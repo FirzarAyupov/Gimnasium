@@ -1,5 +1,6 @@
 ﻿using NAudio.Wave;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Gimnasium
 {
@@ -16,7 +17,12 @@ namespace Gimnasium
             return instance;
         }
 
-        public void AudioPlay(string file)
+        public async void AudioPlayAsync(string file)
+        {
+            await Task.Run(() => Play(file));
+        }
+
+        private void Play(string file)
         {
             using (var audioFile = new AudioFileReader(file))
             using (var outputDevice = new WaveOutEvent())

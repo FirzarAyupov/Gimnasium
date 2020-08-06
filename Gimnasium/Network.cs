@@ -10,6 +10,7 @@ namespace Gimnasium
 {
     class Network
     {
+        static string responseString;
         public static IPAddress[] iPAddress = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
 
         private static string htmlHead = @"
@@ -40,17 +41,16 @@ namespace Gimnasium
                     form{
                         margin-top: 10px;
                         width: 100%;
-                        display: flex;
                     }
-                    form input{
-                        flex-grow: 1;
+                    form div{
                         font-size: 18px;
                     }
-                    form input[type = time],form input[type = text]{
-                        margin-right: 5px;
+                    form input{
+                        margin-top: 5px;
+                        margin-bottom: 5px;
                     }
                     form input[type = submit]{
-                        padding: 5px;
+                        padding: 10px;
                         font-size: 14px;
                         background-color: green;
                         color: white;
@@ -82,7 +82,6 @@ namespace Gimnasium
                 adress = adress.Length < 1 ? "http://" + iPAddress[0].ToString() + ":8888/":"http://localhost:8888/";
             }
             HttpListener listener = new HttpListener();
-            //listener.Prefixes.Add("http://localhost:8888/connection/");
             listener.Prefixes.Add(adress);
             listener.Start();
             Console.WriteLine("Ожидание подключений..." + adress);
@@ -100,7 +99,8 @@ namespace Gimnasium
                         {
                             case "start":
                                 Audio audio = Audio.getInstance();
-                                audio.AudioPlay("zvon.mp3");
+                                audio.AudioPlayAsync("zvon.mp3");
+
                                 break;
                             case "addbell":
                                 if (request.QueryString.AllKeys.Contains("time"))
@@ -133,14 +133,14 @@ namespace Gimnasium
 
                 string htmlAddBellForm = "<form action='" + adress + "addbell' method='GET'>" +
                                             "<input type = 'hidden' name = 'command' value = 'addbell'>" +
-                                            "<input type = 'time' name = 'time'>" +
-                                            "<input type = 'text' name = 'comment' value='Комментарий'" +
+                                            "<div><label>Добавить время для звонка:</label><input type = 'time' name = 'time'></div>" +
+                                            "<div><label>Комментарий:</label><input type = 'text' name = 'comment' value=''></div>" +
                                             "<input type = 'hidden' name = 'pass' value = 'DkmfRTY610'>" +
                                             "<input type = 'submit' value = 'Добавить'>" +
                                          "</form>";
 
                 
-                string responseString = htmlHead + htmlButton + htmlBellTable + htmlAddBellForm + "</body></html>";
+                responseString = htmlHead + htmlButton + htmlBellTable + htmlAddBellForm + "</body></html>";
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                 response.ContentLength64 = buffer.Length;
                 Stream output = response.OutputStream;

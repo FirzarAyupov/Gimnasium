@@ -70,16 +70,15 @@
             // comboBoxIpAdress
             // 
             this.comboBoxIpAdress.FormattingEnabled = true;
-            this.comboBoxIpAdress.Location = new System.Drawing.Point(376, 14);
+            this.comboBoxIpAdress.Location = new System.Drawing.Point(12, 378);
             this.comboBoxIpAdress.Name = "comboBoxIpAdress";
-            this.comboBoxIpAdress.Size = new System.Drawing.Size(185, 21);
+            this.comboBoxIpAdress.Size = new System.Drawing.Size(225, 21);
             this.comboBoxIpAdress.TabIndex = 2;
-            this.comboBoxIpAdress.Visible = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(526, 38);
+            this.label1.Location = new System.Drawing.Point(202, 362);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 3;
@@ -99,13 +98,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(249, 411);
+            this.ClientSize = new System.Drawing.Size(251, 411);
             this.Controls.Add(this.tableBell);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxIpAdress);
             this.Controls.Add(this.labelTime);
             this.Controls.Add(this.buttonBell);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "Управление звонком";
             this.Load += new System.EventHandler(this.Form1_Load);
