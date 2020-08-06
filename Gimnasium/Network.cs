@@ -79,7 +79,7 @@ namespace Gimnasium
         {
             if (iPAddress.Length > 0)
             {
-                adress = adress.Length < 1 ? "http://" + iPAddress[0].ToString() + ":8888/":"http://localhost:8888/";
+                adress = adress.Length < 1 ? "http://" + iPAddress[0].ToString() + ":8888/":"http://" + adress + ":8888/";
             }
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add(adress);

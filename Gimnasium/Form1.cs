@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -45,24 +48,17 @@ namespace Gimnasium
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            DataBase.getAllTime();
+
             timer1.Enabled = true;
             comboBoxIpAdress.Items.AddRange(Network.iPAddress);
             audio = Audio.getInstance();
-            string adress = "http://" + Network.iPAddress + ":8888";
+            string adress = Network.iPAddress[0].ToString();
             if (args.Length > 0)
             {
-                adress = "http://" + args[0] + ":8888";
+                adress = args[0];
             }
-            _ = Network.Listen();
-            Bell.bellList.Add(new Bell("8:00", "Первый урок"));
-            Bell.bellList.Add(new Bell("8:45"));
-            Bell.bellList.Add(new Bell("9:55", "Второй урок"));
-            Bell.bellList.Add(new Bell("9:40"));
-            Bell.bellList.Add(new Bell("9:50", "Третий урок"));
-            Bell.bellList.Add(new Bell("10:35"));
-            Bell.bellList.Add(new Bell("10:45", "Четвертый урок"));
-            Bell.bellList.Add(new Bell("11:30"));
-            Bell.bellList.Add(new Bell("16:35", "Проверка"));
+            _ = Network.Listen(adress);
         }
     }
 }
