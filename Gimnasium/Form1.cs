@@ -50,6 +50,8 @@ namespace Gimnasium
         {
             DataBase.getAllTime();
 
+            tableBell.DataSource = DataBase.getDS();
+
             timer1.Enabled = true;
             comboBoxIpAdress.Items.AddRange(Network.iPAddress);
             audio = Audio.getInstance();
